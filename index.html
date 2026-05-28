@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeet | Creative Developer</title>
+    <meta name="description"
+        content="A premium portfolio showcasing creative development work, modern UI/UX, and high-performance web applications.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/ogl"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="custom-cursor"></div>
+
+    <nav class="pill-nav-container" id="navbar">
+        <div class="pill-nav-inner">
+            <!-- Logo Section -->
+            <div class="pill-nav-logo-wrapper" id="nav-logo">
+                <a href="#home" class="pill-nav-logo-link">
+                    <div class="logo-icon-container">
+                        <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                            <path d="M9 21V12h6v9" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="pill-nav-menu-wrapper">
+                <ul class="pill-nav-list" role="menubar">
+
+                    <li role="none" class="pill-nav-item">
+                        <a href="#about" class="pill-nav-link" role="menuitem">
+                            <div class="hover-circle"></div>
+                            <div class="label-stack">
+                                <span class="pill-label">About</span>
+                                <span class="pill-label-hover">About</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li role="none" class="pill-nav-item">
+                        <a href="javascript:void(0)" onclick="openPortfolio('qualifications')" class="pill-nav-link"
+                            role="menuitem">
+                            <div class="hover-circle"></div>
+                            <div class="label-stack">
+                                <span class="pill-label">Qualifications</span>
+                                <span class="pill-label-hover">Qualifications</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li role="none" class="pill-nav-item">
+                        <a href="javascript:void(0)" onclick="openPortfolio('skills')" class="pill-nav-link"
+                            role="menuitem">
+                            <div class="hover-circle"></div>
+                            <div class="label-stack">
+                                <span class="pill-label">Skills</span>
+                                <span class="pill-label-hover">Skills</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li role="none" class="pill-nav-item">
+                        <a href="#projects" class="pill-nav-link" role="menuitem">
+                            <div class="hover-circle"></div>
+                            <div class="label-stack">
+                                <span class="pill-label">Projects</span>
+                                <span class="pill-label-hover">Projects</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li role="none" class="pill-nav-item">
+                        <a href="#contact" class="pill-nav-link" role="menuitem">
+                            <div class="hover-circle"></div>
+                            <div class="label-stack">
+                                <span class="pill-label">Contact</span>
+                                <span class="pill-label-hover">Contact</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="pill-nav-mobile-toggle" aria-label="Toggle menu" id="mobile-toggle">
+                <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div class="pill-nav-mobile-menu" id="mobile-menu">
+            <ul class="mobile-menu-list">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="javascript:void(0)" onclick="openPortfolio('qualifications')">Qualifications</a></li>
+                <li><a href="javascript:void(0)" onclick="openPortfolio('skills')">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div id="waves-container"></div>
+            <div class="hero-content">
+                <h1 class="reveal-text">Hi, I'm <span class="accent">Jeet</span></h1>
+                <p class="reveal-text delay-1">I am <span id="dynamic-text" class="accent"></span></p>
+                <div class="hero-btns reveal-text delay-2">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse"></div>
+            </div>
+        </section>
+
+        <section id="about" class="ticker-section">
+            <div class="container relative-z reveal">
+                <h2 class="section-title">About Me</h2>
+            </div>
+            <div class="ticker-sticky">
+                <div class="ticker-track">
+                    <span class="ticker-text">I am a Full Stack Developer</span>
+                    <svg class="ticker-curve" viewBox="0 0 100 20" fill="none">
+                        <path d="M0 10 Q 25 20, 50 10 T 100 10" stroke="#FFFFFF" stroke-opacity="0.2"
+                            stroke-width="1.5" />
+                    </svg>
+                    <span class="ticker-text">who loves crafting beautiful web experiences</span>
+                    <div class="ticker-icon-sparkle">✦</div>
+                    <span class="ticker-text">from pixel-perfect UIs to solid backend systems</span>
+                    <svg class="ticker-wave" viewBox="0 0 100 30" fill="none">
+                        <path d="M0 15 C 20 0, 40 30, 100 15" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
+                    </svg>
+                    <span class="ticker-text accent">Frontend in React & Vite</span>
+                    <span class="ticker-text">Backend with Node.js & SQL</span>
+                    <div class="ticker-icon-sparkle">⚡</div>
+                    <span class="ticker-text">AI & LLM Integration</span>
+                    <span class="ticker-text accent">High-performance WebGL Animations</span>
+                    <svg class="ticker-curve" viewBox="0 0 100 20" fill="none">
+                        <path d="M0 10 Q 25 20, 50 10 T 100 10" stroke="#FFFFFF" stroke-opacity="0.2"
+                            stroke-width="1.5" />
+                    </svg>
+                    <span class="ticker-text">Python Scripting & Premium UI/UX Design</span>
+                    <div class="ticker-icon-sparkle large">⚛️</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Matrix Morpheus Section -->
+        <section id="matrix-choice" class="matrix-section">
+            <div class="matrix-inner">
+                <div class="matrix-text">
+                    <h2 class="matrix-heading">Choose Your Path</h2>
+
+                </div>
+                <div class="matrix-image-wrapper">
+                    <img src="media__1779805897537.png" alt="Morpheus offering a choice" class="matrix-img"
+                        id="matrix-img" />
+                    <!-- Red Pill Hotspot (left hand) -->
+                    <button class="pill-hotspot pill-hotspot-red" id="btn-red-pill" aria-label="Red pill — go to Skills"
+                        onclick="openPortfolio('skills')">
+                        <span class="pill-hotspot-label">Skills</span>
+                    </button>
+                    <!-- Blue Pill Hotspot (right hand) -->
+                    <button class="pill-hotspot pill-hotspot-blue" id="btn-blue-pill"
+                        aria-label="Blue pill — go to Qualifications" onclick="openPortfolio('qualifications')">
+                        <span class="pill-hotspot-label">Qualifications</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section reveal">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Selected Projects</h2>
+                    <div class="project-filters">
+                        <button class="filter-btn active" data-filter="all">⚡ All</button>
+                        <button class="filter-btn" data-filter="ai">🤖 AI / ML</button>
+                        <button class="filter-btn" data-filter="web">🌐 Web</button>
+                        <button class="filter-btn" data-filter="iot">📡 IoT</button>
+                        <button class="filter-btn" data-filter="vision">👁️ Vision</button>
+                    </div>
+                </div>
+
+                <div class="projects-grid" id="project-container">
+                    <!-- Project 01: CollegeQ -->
+                    <div class="project-card" data-cat="web">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="assets/college_erp.png" alt="CollegeQ">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>Web</span><span>React</span><span>Node.js</span><span>PostgreSQL</span></div>
+                                <div class="project-num">01</div>
+                                <h3>CollegeQ</h3>
+                                <p>A high-performance College ERP with department isolation, secure attendance systems, and automated grading flows.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 02: Expense Tracker -->
+                    <div class="project-card" data-cat="web">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="assets/expense_tracker.png" alt="Expense Tracker">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>Web</span><span>Firebase</span><span>React</span><span>Chart.js</span></div>
+                                <div class="project-num">02</div>
+                                <h3>Expense Tracker</h3>
+                                <p>Real-time financial tracking app with Firebase DB, expense categorization, and dynamic data visualization.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 03: Mood Music App -->
+                    <div class="project-card" data-cat="ai">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1470"
+                                    alt="Mood Music App">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>AI / ML</span><span>Node.js</span><span>Spotify API</span></div>
+                                <div class="project-num">03</div>
+                                <h3>Mood Music App</h3>
+                                <p>AI-powered music recommendation engine that curates playlists based on your real-time
+                                    emotional state.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 04: News App -->
+                    <div class="project-card" data-cat="web">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1470"
+                                    alt="News App">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>Web</span><span>REST API</span><span>JavaScript</span></div>
+                                <div class="project-num">04</div>
+                                <h3>News App</h3>
+                                <p>Real-time news aggregator with category filtering, bookmarks, and a clean reading
+                                    experience.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 05: Personal Assistant -->
+                    <div class="project-card" data-cat="ai">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&q=80&w=1470"
+                                    alt="Personal Assistant">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>AI /
+                                        ML</span><span>Python</span><span>NLP</span><span>OpenAI</span></div>
+                                <div class="project-num">05</div>
+                                <h3>Personal Assistant</h3>
+                                <p>Voice-activated AI assistant with natural language understanding, task scheduling,
+                                    and smart home control.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 06: Weather Check -->
+                    <div class="project-card" data-cat="iot">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="assets/weather_iot.png" alt="Weather Check">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>IoT</span><span>Arduino</span><span>Sensors</span><span>DHT22</span></div>
+                                <div class="project-num">06</div>
+                                <h3>Weather Check</h3>
+                                <p>IoT-based weather station using Arduino and environmental sensors to monitor real-time temperature, humidity, and atmospheric pressure.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 07: Fire Alarm System -->
+                    <div class="project-card" data-cat="vision">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="assets/fire_vision.png" alt="Fire Alarm System">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags">
+                                    <span>Vision</span><span>AI</span><span>OpenCV</span><span>Python</span>
+                                </div>
+                                <div class="project-num">07</div>
+                                <h3>Fire Alarm System</h3>
+                                <p>AI-powered fire detection system that monitors laptop camera feeds in real-time to identify flames and trigger instant alerts using Computer Vision.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 08: Face Detector -->
+                    <div class="project-card" data-cat="vision">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&q=80&w=1470"
+                                    alt="Face Detector">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags">
+                                    <span>Vision</span><span>OpenCV</span><span>DeepFace</span><span>PyTorch</span>
+                                </div>
+                                <div class="project-num">08</div>
+                                <h3>Face Detector</h3>
+                                <p>Real-time face detection and recognition using deep learning — identifies faces,
+                                    emotions, and age.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 09: Humidity & Temp Monitor -->
+                    <div class="project-card" data-cat="iot">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=1470"
+                                    alt="Humidity Monitor">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>IoT</span><span>Raspberry
+                                        Pi</span><span>InfluxDB</span><span>Grafana</span></div>
+                                <div class="project-num">09</div>
+                                <h3>Humidity & Temp Monitor</h3>
+                                <p>Smart IoT dashboard reading DHT22 sensor data in real-time, logging trends and
+                                    alerting on breaches.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 10: Motion Detector -->
+                    <div class="project-card" data-cat="iot">
+                        <div class="project-inner">
+                            <div class="project-image-container">
+                                <img src="assets/motion_detector.png" alt="Motion Detector">
+                            </div>
+                            <div class="project-overlay">
+                                <div class="tags"><span>IoT</span><span>PIR
+                                        Sensor</span><span>ESP32-CAM</span><span>Python</span></div>
+                                <div class="project-num">10</div>
+                                <h3>Motion Detector</h3>
+                                <p>PIR + camera-based motion detection with snapshot capture and instant Telegram
+                                     notifications.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Get In Touch CTA Card -->
+                    <div class="project-card cta-project-card"
+                        onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                        <div class="project-inner">
+                            <div class="cta-card-content">
+                                <div class="cta-icon">🚀</div>
+                                <h3>Get In Touch</h3>
+                                <p>Ready to start a project? My expertise in AI, IoT, and Web is ready for your next
+                                    challenge.</p>
+                                <span class="cta-link">Start a Conversation →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section reveal">
+    <div class="container">
+
+        <div class="contact-header">
+            <div class="contact-eyebrow">— Available for work</div>
+            <h2 class="section-title">Let's Build<br><span class="accent">Something Real</span></h2>
+            <p class="cta-message">Got a project, an idea, or just want to say hi?<br>I'm always open to the right opportunity.</p>
+        </div>
+
+        <!-- Big email CTA -->
+        <div class="contact-big-email reveal">
+         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=connect.jeetdey@gmail.com"
+   target="_blank"
+   class="contact-email-link">
+    <span class="contact-email-text">connect.jeetdey@gmail.com</span>
+    <span class="contact-email-arrow">↗</span>
+</a>
+        </div>
+
+        <!-- Divider -->
+        <div class="contact-divider">
+            <span>or find me on</span>
+        </div>
+
+        <!-- Social row -->
+        <div class="contact-social-row">
+
+            <a href="https://www.linkedin.com/in/jeet-dey-7ab42b38b" target="_blank" class="social-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8C17.5913 8 19.1174 8.63214 20.2426 9.75736C21.3679 10.8826 22 12.4087 22 14V21H18V14C18 13.4696 17.7893 12.9609 17.4142 12.5858C17.0391 12.2107 16.5304 12 16 12C15.4696 12 14.9609 12.2107 14.5858 12.5858C14.2107 12.9609 14 13.4696 14 14V21H10V14C10 12.4087 10.6321 10.8826 11.7574 9.75736C12.8826 8.63214 14.4087 8 16 8Z"/>
+                    <path d="M6 9H2V21H6V9Z"/>
+                    <path d="M4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4C2 5.10457 2.89543 6 4 6Z"/>
+                </svg>
+                <span>LinkedIn</span>
+            </a>
+
+            <a href="https://github.com/Jeet161" target="_blank" class="social-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19C4 21 4 17 2 17M22 17C22 17 22 21 17 19M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z"/>
+                </svg>
+                <span>GitHub</span>
+            </a>
+
+            <a href="https://www.instagram.com/zzeet_dey?igsh=MXhuN3RkbDRidnQzMQ==" target="_blank" class="social-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <path d="M16 11.37C16.1234 12.2022 15.9185 13.0487 15.4191 13.7228C14.9197 14.397 14.1545 14.8596 13.298 15.034C12.4414 15.2084 11.5317 15.084 10.7483 14.6732C9.96495 14.2624 9.3516 13.6062 9.02011 12.8021C8.68862 11.9981 8.65342 11.0857 8.92134 10.2597C9.18925 9.43382 9.74235 8.74567 10.4908 8.30939C11.2393 7.87311 12.137 7.71212 13.0232 7.85908C13.9094 8.00603 14.7337 8.44149 15.34 9.08C15.8617 9.60537 16.1963 10.2721 16.2917 11"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                <span>Instagram</span>
+            </a>
+
+        </div>
+
+        <!-- Book a call CTA -->
+        <div class="cta-wrapper reveal mt-8">
+            <a href="https://calendly.com" target="_blank" class="premium-cta" id="cta-button">
+                <span class="cta-glow"></span>
+                <span class="cta-text">Book a Call</span>
+                <span class="cta-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+
+    </div>
+</section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Jeet.dev. Built with passion & Precision. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- EXPERIENCE HUB OVERLAY -->
+    <div id="portfolio-overlay" class="fullscreen-overlay" aria-hidden="true">
+        <div class="overlay-content full-width">
+            <!-- REPLACE the entire #hub-skills-view div in index.html with this -->
+
+<div id="hub-skills-view" class="hub-view active">
+
+    <div class="skills-stepper">
+
+          <!-- Title -->
+        <div style="text-align:center; padding: 3rem 0 1rem; position: relative; z-index: 3;">
+            <h2 style="font-family:'Outfit',sans-serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:700; color:#fff; letter-spacing:-0.5px;">
+                Skills & Technologies
+            </h2>
+            <p style="color:rgba(255,255,255,0.4); font-size:0.95rem; margin-top:0.5rem;">
+                Tools and languages I work with
+            </p>
+        </div>
+
+        <!-- Animated journey line (same as qualifications) -->
+        <svg class="skills-line-svg" viewBox="-1000 0 4000 1000" preserveAspectRatio="none">
+            <path class="journey-line-active" id="skills-progress-line"
+                d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
+            <path class="journey-line-active-secondary" id="skills-progress-line-secondary"
+                d="M 1000 0 C 0 250, 2000 250, 1000 500 C 0 750, 2000 750, 1000 1000" />
+        </svg>
+
+        <!-- Step 1: Frontend -->
+        <div class="skill-step">
+            <div class="skill-step-number">1</div>
+            <div class="skill-step-header">
+                <span class="skill-step-emoji">🎨</span>
+                <span class="skill-step-title">Frontend</span>
+                <span class="skill-step-count">6</span>
+            </div>
+            <div class="skill-step-badges">
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+                    <span>HTML5</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+                    <span>CSS3</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS">
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+                    <span>React</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TS">
+                    <span>TypeScript</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" class="icon-invert">
+                    <span>Next.js</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Backend -->
+        <div class="skill-step">
+            <div class="skill-step-number">2</div>
+            <div class="skill-step-header">
+                <span class="skill-step-emoji">⚙️</span>
+                <span class="skill-step-title">Backend</span>
+                <span class="skill-step-count">6</span>
+            </div>
+            <div class="skill-step-badges">
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js">
+                    <span>Node.js</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" class="icon-invert">
+                    <span>Express</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB">
+                    <span>MongoDB</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                    <span>Python</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL">
+                    <span>MySQL</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI">
+                    <span>FastAPI</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Languages -->
+        <div class="skill-step">
+            <div class="skill-step-number">3</div>
+            <div class="skill-step-header">
+                <span class="skill-step-emoji">💻</span>
+                <span class="skill-step-title">Languages</span>
+                <span class="skill-step-count">5</span>
+            </div>
+            <div class="skill-step-badges">
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+                    <span>C++</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C">
+                    <span>C</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                    <span>Python</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS">
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TS">
+                    <span>TypeScript</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Tools & DevOps -->
+        <div class="skill-step">
+            <div class="skill-step-number">4</div>
+            <div class="skill-step-header">
+                <span class="skill-step-emoji">🛠️</span>
+                <span class="skill-step-title">Tools & DevOps</span>
+                <span class="skill-step-count">8</span>
+            </div>
+            <div class="skill-step-badges">
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git">
+                    <span>Git</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="icon-invert">
+                    <span>GitHub</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VSCode">
+                    <span>VS Code</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-plain.svg" alt="Postman">
+                    <span>Postman</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
+                    <span>Docker</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux">
+                    <span>Linux</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
+                    <span>Figma</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg" alt="npm">
+                    <span>npm</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: AI / ML -->
+        <div class="skill-step">
+            <div class="skill-step-number">5</div>
+            <div class="skill-step-header">
+                <span class="skill-step-emoji">🤖</span>
+                <span class="skill-step-title">AI / ML</span>
+                <span class="skill-step-count">6</span>
+            </div>
+            <div class="skill-step-badges">
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" alt="NumPy">
+                    <span>NumPy</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg" alt="Jupyter">
+                    <span>Jupyter</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" alt="Pandas">
+                    <span>Pandas</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt="PyTorch">
+                    <span>PyTorch</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg" alt="OpenCV">
+                    <span>OpenCV</span>
+                </div>
+                <div class="skill-step-badge">
+                    <img src="https://www.svgrepo.com/show/353396/api.svg" alt="API" class="icon-invert">
+                    <span>API Integration</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end .skills-stepper -->
+
+    <div class="hub-footer">
+        <button class="hub-back-btn bottom" onclick="closePortfolio()" aria-label="Go back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+            </svg>
+            <span>Back Home</span>
+        </button>
+    </div>
+
+</div>
+            <div id="hub-qualifications-view" class="hub-view">
+                <div class="stepper-container hub-stepper">
+                    <svg class="journey-line-svg" viewBox="-1000 0 4000 1000" preserveAspectRatio="none">
+                        <!-- Primary Wide Curve -->
+                        <path class="journey-line-path" d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
+                        <path class="journey-line-active" id="journey-progress-line-hub"
+                            d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
+
+                        <!-- Secondary Stretched Wavy Path (Final) -->
+                        <path class="journey-line-active-secondary" id="journey-progress-line-hub-secondary"
+                            d="M 1000 0 C 0 250, 2000 250, 1000 500 C 0 750, 2000 750, 1000 1000" />
+                    </svg>
+                    <!-- Step 1 -->
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        <div class="step-info">
+                            <div class="qual-year">Aug 2026 — Present</div>
+                            <h3>Bachelor of Technology</h3>
+                            <p class="qual-sub">🏛️ Electronics & Communication Engineering (ECE)</p>
+                            <p class="qual-desc">Upcoming B.Tech in ECE — combining hardware fundamentals with Full
+                                Stack Web Development and AI skills.</p>
+                            <div class="tags">
+                                <span class="tag">B.Tech</span>
+                                <span class="tag">ECE</span>
+                                <span class="tag">Upcoming</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step active">
+                        <div class="step-number">2</div>
+                        <div class="step-info">
+                            <div class="qual-year">2023 — 2025</div>
+                            <h3>Higher Secondary (12th)</h3>
+                            <p class="qual-sub">🏫 Science Stream — PCM + CS</p>
+                            <p class="qual-desc">Completed 12th with Science stream, scoring strong marks in Mathematics
+                                and Computer Science.</p>
+                            <div class="tags">
+                                <span class="tag">12th Grade</span>
+                                <span class="tag">PCM + CS</span>
+                                <span class="tag">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step active">
+                        <div class="step-number">3</div>
+                        <div class="step-info">
+                            <div class="qual-year">2021 — 2023</div>
+                            <h3>Secondary (10th)</h3>
+                            <p class="qual-sub">🏫 All Subjects</p>
+                            <p class="qual-desc">Completed 10th, building a strong foundation in logical thinking and
+                                problem-solving.</p>
+                            <div class="tags">
+                                <span class="tag">10th Grade</span>
+                                <span class="tag">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hub-footer">
+                    <button class="hub-back-btn bottom" onclick="closePortfolio()" aria-label="Go back">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+                        </svg>
+                        <span>Back Home</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
