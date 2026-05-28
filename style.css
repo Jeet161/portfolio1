@@ -502,7 +502,7 @@ body.cursor-active .cursor-dot {
 .hero-dock-wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 8rem; 
+    margin-top: 8rem;
 }
 
 .hero-dock {
@@ -536,11 +536,11 @@ body.cursor-active .cursor-dot {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     flex-shrink: 0;
-    transition: width  0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.2s ease,
-                border-color 0.2s ease,
-                color 0.2s ease;
+    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .dock-item:hover {
@@ -554,8 +554,8 @@ body.cursor-active .cursor-dot {
     height: 18px;
     flex-shrink: 0;
     pointer-events: none;
-    transition: width  0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .dock-tooltip {
@@ -604,8 +604,15 @@ body.cursor-active .cursor-dot {
 }
 
 @keyframes dock-pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.35; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
 }
 
 .dock-sep {
@@ -622,18 +629,22 @@ body.cursor-active .cursor-dot {
         display: flex;
         justify-content: center;
     }
+
     .hero-dock {
         gap: 5px;
         padding: 8px 14px;
     }
+
     .dock-item {
         width: 38px;
         height: 38px;
     }
+
     .dock-item svg {
         width: 16px;
         height: 16px;
     }
+
     .dock-static-item {
         font-size: 0.65rem;
     }
@@ -1321,6 +1332,9 @@ footer {
 
 .journey-line-path {
     display: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 4px;
+    fill: none;
 }
 
 /* Ticker Horizontal Scroll */
@@ -1525,58 +1539,76 @@ footer {
     white-space: nowrap;
 }
 
-.ticker-text .tech-react { 
+.ticker-text .tech-react {
     color: #00d8ff !important;
     -webkit-text-fill-color: #00d8ff !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-vite { 
+
+.ticker-text .tech-vite {
     color: #ff00ff !important;
     -webkit-text-fill-color: #ff00ff !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-node { 
+
+.ticker-text .tech-node {
     color: #339933 !important;
     -webkit-text-fill-color: #339933 !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-sql { 
+
+.ticker-text .tech-sql {
     color: #4479a1 !important;
     -webkit-text-fill-color: #4479a1 !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-ai { 
+
+.ticker-text .tech-ai {
     color: #ff5733 !important;
     -webkit-text-fill-color: #ff5733 !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-llm { 
+
+.ticker-text .tech-llm {
     color: #ffc300 !important;
     -webkit-text-fill-color: #ffc300 !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-webgl { 
+
+.ticker-text .tech-webgl {
     color: #ff0000 !important;
     -webkit-text-fill-color: #ff0000 !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
-.ticker-text .tech-python { 
+
+.ticker-text .tech-python {
     color: #3776ab !important;
     -webkit-text-fill-color: #3776ab !important;
     -webkit-text-stroke: 0 !important;
     background: none !important;
 }
 
-.tech-fullstack { color: #f97316 !important; -webkit-text-fill-color: #f97316 !important; }
-.tech-ux { color: #ec4899 !important; -webkit-text-fill-color: #ec4899 !important; }
-.tech-ui { color: #8b5cf6 !important; -webkit-text-fill-color: #8b5cf6 !important; }
+.tech-fullstack {
+    color: #f97316 !important;
+    -webkit-text-fill-color: #f97316 !important;
+}
+
+.tech-ux {
+    color: #ec4899 !important;
+    -webkit-text-fill-color: #ec4899 !important;
+}
+
+.tech-ui {
+    color: #8b5cf6 !important;
+    -webkit-text-fill-color: #8b5cf6 !important;
+}
 
 #about .section-title {
     margin-top: 5rem;
@@ -2078,9 +2110,9 @@ body.overlay-open {
 
 .hub-footer {
     width: 100%;
-    margin-top: 12rem;
-    /* Significantly pushed down for a senior, airy feel */
-    padding: 6rem 0 12rem;
+    margin-top: -2rem;
+    /* Adjusted to sit precisely where the paths converge */
+    padding: 2rem 0 6rem;
     display: flex;
     justify-content: center;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -3440,4 +3472,202 @@ body.overlay-open {
     background: linear-gradient(90deg, #000, #444);
     z-index: 10001;
     transition: width 0.1s ease;
+}
+
+/* ── HUB THEMES (Red for Skills, Blue for Qualifications) ── */
+.hub-view {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Red Theme (Skills) */
+#hub-skills-view.red-theme .skills-red-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(circle, rgba(255, 51, 51, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+#hub-skills-view.red-theme #skills-progress-line {
+    stroke: #ff3333 !important;
+    stroke-width: 6px !important;
+    filter: drop-shadow(0 0 10px #ff3333) drop-shadow(0 0 25px rgba(255, 51, 51, 0.8)) !important;
+}
+
+#hub-skills-view.red-theme #skills-progress-line-secondary {
+    stroke: #ff3333 !important;
+    stroke-width: 3.4px !important;
+    opacity: 0.65;
+    filter: drop-shadow(0 0 8px #ff3333) drop-shadow(0 0 20px rgba(255, 51, 51, 0.6)) !important;
+}
+
+#hub-skills-view.red-theme .skill-step-number {
+    border-color: rgba(255, 51, 51, 0.3) !important;
+    color: #ff3333 !important;
+}
+
+#hub-skills-view.red-theme .skill-step:hover .skill-step-number {
+    border-color: #ff3333 !important;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.4) !important;
+}
+
+#hub-skills-view.red-theme .skill-step-badge:hover {
+    border-color: rgba(255, 51, 51, 0.3) !important;
+    background: rgba(255, 51, 51, 0.05) !important;
+}
+
+#hub-skills-view.red-theme h2 {
+    text-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
+}
+
+/* Blue Theme (Qualifications) - Consistency Bonus */
+#hub-qualifications-view.blue-theme #journey-progress-line-hub {
+    stroke: #4499ff !important;
+    stroke-width: 6px !important;
+    filter: drop-shadow(0 0 10px #4499ff) drop-shadow(0 0 25px rgba(68, 153, 255, 0.8)) !important;
+}
+
+#hub-qualifications-view.blue-theme #journey-progress-line-hub-secondary {
+    stroke: #4499ff !important;
+    stroke-width: 3.5px !important;
+    opacity: 0.65;
+    filter: drop-shadow(0 0 8px #4499ff) drop-shadow(0 0 20px rgba(68, 153, 255, 0.6)) !important;
+}
+
+#hub-qualifications-view.blue-theme .step-number {
+    border-color: rgba(68, 153, 255, 0.3) !important;
+    color: #4499ff !important;
+}
+
+#hub-qualifications-view.blue-theme .step:hover .step-number {
+    border-color: #4499ff !important;
+    box-shadow: 0 0 15px rgba(68, 153, 255, 0.4) !important;
+}
+
+#hub-qualifications-view .step {
+    margin-bottom: 6rem !important;
+}
+
+#hub-skills-view .skill-step {
+    margin-bottom: 6rem !important;
+}
+
+
+/* Thematic Back Buttons */
+.red-theme .hub-back-btn {
+    border-color: rgba(255, 51, 51, 0.15) !important;
+}
+
+.red-theme .hub-back-btn:hover {
+    border-color: #ff3333 !important;
+    color: #ff3333 !important;
+    box-shadow: 0 0 25px rgba(255, 51, 51, 0.3) !important;
+}
+
+.blue-theme .hub-back-btn {
+    border-color: rgba(68, 153, 255, 0.15) !important;
+}
+
+.blue-theme .hub-back-btn:hover {
+    border-color: #4499ff !important;
+    color: #4499ff !important;
+    box-shadow: 0 0 25px rgba(68, 153, 255, 0.3) !important;
+}
+
+/* Specific Footer Override for Red Section */
+#hub-skills-view .hub-footer {
+    margin-top: 12rem !important;
+    /* Balanced distance to hit the bottom point exactly */
+}
+
+
+
+/* ── ADVANCED RED EFFECTS (Skills) ── */
+.skills-scanline {
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(255, 51, 51, 0.12) 50%,
+            transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+    animation: scanLine 6s linear infinite;
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(800%);
+    }
+}
+
+.skills-particles .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ff3333;
+    border-radius: 50%;
+    filter: blur(1px) drop-shadow(0 0 8px #ff3333);
+    z-index: 1;
+    opacity: 0.3;
+    animation: floatParticle 12s infinite alternate cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+#hub-skills-view .p1 {
+    top: 15%;
+    left: 8%;
+    animation-duration: 15s;
+}
+
+#hub-skills-view .p2 {
+    top: 40%;
+    left: 82%;
+    animation-duration: 12s;
+    animation-delay: -2s;
+}
+
+#hub-skills-view .p3 {
+    top: 70%;
+    left: 12%;
+    animation-duration: 18s;
+    animation-delay: -4s;
+}
+
+#hub-skills-view .p4 {
+    top: 88%;
+    left: 78%;
+    animation-duration: 14s;
+    animation-delay: -6s;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(40px, -60px);
+    }
+}
+
+/* Harder red pulse on cards check */
+#hub-skills-view.red-theme .skill-step {
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease !important;
+}
+
+#hub-skills-view.red-theme .skill-step:hover {
+    box-shadow: 0 0 40px rgba(255, 51, 51, 0.1), 0 0 0 1px rgba(255, 51, 51, 0.25) !important;
+    border-color: rgba(255, 51, 51, 0.3) !important;
 }
