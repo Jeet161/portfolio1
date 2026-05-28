@@ -516,6 +516,14 @@
                 </div>
                 <div class="skills-stepper">
 
+                    <!-- Animated journey line (same as qualifications) -->
+                    <svg class="skills-line-svg" viewBox="-1000 0 4000 1000" preserveAspectRatio="none">
+                        <path class="journey-line-active" id="skills-progress-line"
+                            d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
+                        <path class="journey-line-active-secondary" id="skills-progress-line-secondary"
+                            d="M 1000 0 C 0 250, 2000 250, 1000 500 C 0 750, 2000 750, 1000 1000" />
+                    </svg>
+
                     <!-- Title -->
                     <div style="text-align:center; padding: 3rem 0 1rem; position: relative; z-index: 3;">
                         <h2
@@ -526,14 +534,6 @@
                             Tools and languages I work with
                         </p>
                     </div>
-
-                    <!-- Animated journey line (same as qualifications) -->
-                    <svg class="skills-line-svg" viewBox="-1000 0 4000 1000" preserveAspectRatio="none">
-                        <path class="journey-line-active" id="skills-progress-line"
-                            d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
-                        <path class="journey-line-active-secondary" id="skills-progress-line-secondary"
-                            d="M 1000 0 C 0 250, 2000 250, 1000 500 C 0 750, 2000 750, 1000 1000" />
-                    </svg>
 
                     <!-- Step 1: Frontend -->
                     <div class="skill-step">
@@ -763,26 +763,24 @@
             </div>
             <div id="hub-qualifications-view" class="hub-view blue-theme">
                 <div class="stepper-container hub-stepper">
+                    <!-- SVG background line (same as skills) -->
                     <svg class="journey-line-svg" viewBox="-1000 0 4000 1000" preserveAspectRatio="none">
-                        <!-- Primary Wide Curve -->
                         <path class="journey-line-path" d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
                         <path class="journey-line-active" id="journey-progress-line-hub"
                             d="M 1000 0 C 4000 250, -2000 750, 1000 1000" />
-
-                        <!-- Secondary Stretched Wavy Path (Final) -->
                         <path class="journey-line-active-secondary" id="journey-progress-line-hub-secondary"
                             d="M 1000 0 C 0 250, 2000 250, 1000 500 C 0 750, 2000 750, 1000 1000" />
                     </svg>
-                    <!-- Title -->
-                    <div style="text-align:center; margin-bottom: 5rem; position: relative; z-index: 10;">
-                        <span
-                            style="font-size:0.8rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.4); display:block; margin-bottom:1rem;">
-                            Path to Excellence
-                        </span>
+
+                    <!-- Title (same structure as Skills section) -->
+                    <div style="text-align:center; padding: 3rem 0 1rem; position: relative; z-index: 3;">
                         <h2
                             style="font-family:'Outfit',sans-serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:700; color:#fff; letter-spacing:-0.5px;">
                             Education & Journey
                         </h2>
+                        <p style="color:rgba(255,255,255,0.4); font-size:0.95rem; margin-top:0.5rem;">
+                            Path to Excellence & Academic Background
+                        </p>
                     </div>
                     <!-- Step 1 -->
                     <div class="step active">

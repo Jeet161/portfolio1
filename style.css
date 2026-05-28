@@ -1315,9 +1315,8 @@ footer {
     padding: 2rem 0;
 }
 
-.stepper-container::before,
-.stepper-container::after {
-    display: none !important;
+#qualifications .journey-footer {
+    margin-top: 5rem;
 }
 
 .journey-line-svg {
@@ -2120,11 +2119,30 @@ body.overlay-open {
     z-index: 10;
 }
 
+/* Target RED section only for aggressive lift */
+#hub-skills-view .hub-footer {
+    margin-top: -25.5rem !important;
+}
+
+/* Eliminate the massive gap at the end of the journey specifically for skills */
+#hub-skills-view .skill-step:last-of-type {
+    margin-bottom: 2rem !important;
+}
+
+
 @media (max-width: 768px) {
+    .hub-footer {
+        margin-top: 3rem !important;
+        padding: 1rem 0 4rem;
+    }
+
+    #hub-skills-view .hub-footer {
+        margin-top: -10rem !important; /* Raised to meet the converging red paths */
+    }
+
     .hub-back-btn {
-        margin: 1rem 0 0 1rem;
         font-size: 0.75rem;
-        padding: 0.5rem 1rem 0.5rem 0.8rem;
+        padding: 0.7rem 1.4rem;
     }
 }
 
@@ -2581,7 +2599,7 @@ body.overlay-open {
 
     /* --- About Ticker --- */
     .ticker-text {
-        font-size: 5rem;
+        font-size: clamp(3rem, 12vw, 5rem);
     }
 
     .ticker-curve,
@@ -2782,32 +2800,39 @@ body.overlay-open {
     }
 
     /* Stack steps vertically, full width */
-    .step {
-        width: 85% !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
+    .step, .skill-step {
+        width: 92% !important;
+        max-width: 480px !important;
+        margin: 0 auto 3.5rem !important;
+        padding: 1.8rem 1.4rem !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
         text-align: left !important;
-        margin-bottom: 6rem;
-        padding: 2rem 1.5rem;
-    }
-
-    /* Hide journey line on mobile (too complex to render cleanly) */
-    /* Keep journey line on mobile but scale it down slightly */
-    .journey-line-svg {
-        display: block;
-        width: 120vw;
-        opacity: 0.6;
-    }
-
-    /* Step number centred above card on mobile */
-    .step-number {
-        position: relative;
-        top: auto;
+        display: block !important;
+        float: none !important;
         left: auto !important;
         right: auto !important;
-        transform: none;
-        margin-bottom: 1.2rem;
-        display: inline-flex;
+    }
+
+    /* Keep journey line on mobile but scale it down slightly */
+    .journey-line-svg {
+        display: block !important;
+        width: 120vw !important;
+        opacity: 0.6 !important;
+    }
+
+    /* Step number layout on mobile */
+    .step-number, .skill-step-number {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        margin-bottom: 1.5rem !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 0.8rem !important;
+        display: flex !important;
     }
 
     .step:hover .step-number {
@@ -2822,11 +2847,27 @@ body.overlay-open {
         font-size: 1rem;
     }
 
-    .qual-desc {
+    .qual-desc, .skill-desc {
         font-size: 0.9rem;
     }
 
     .tags {
+        justify-content: flex-start !important;
+    }
+
+    /* Skills Specific Mobile Cleanups */
+    .skill-step:nth-child(even), 
+    .skill-step:nth-child(odd) {
+        text-align: left !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .skill-step-header {
+        justify-content: flex-start !important;
+    }
+
+    .skill-badges {
         justify-content: flex-start !important;
     }
 
@@ -2846,34 +2887,43 @@ body.overlay-open {
 /* ─── EXTRA SMALL (≤ 480px) ─── */
 @media (max-width: 480px) {
     .hero-content h1 {
-        font-size: clamp(2rem, 10vw, 2.8rem);
+        font-size: clamp(2.2rem, 12vw, 3.2rem);
     }
 
     .matrix-heading {
-        font-size: clamp(1.8rem, 8vw, 2.5rem);
+        font-size: clamp(1.8rem, 10vw, 2.2rem);
     }
 
     .ticker-text {
-        font-size: 3.5rem;
+        font-size: clamp(2.5rem, 15vw, 3.5rem);
     }
 
     .projects-grid {
-        padding: 0.5rem;
+        padding: 1rem;
         gap: 2rem;
     }
 
     .project-card {
-        height: 280px;
+        height: 320px;
     }
 
-    .step {
-        width: 94% !important;
+    .step, .skill-step {
+        width: 95% !important;
         padding: 1.5rem 1.2rem;
-        margin-bottom: 4rem;
+        margin-bottom: 3rem !important;
     }
 
-    .step h3 {
-        font-size: 1.4rem;
+    .step h3, .skill-step-title {
+        font-size: 1.3rem;
+    }
+
+    .tags {
+        gap: 0.4rem;
+    }
+
+    .tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
     }
 }
 

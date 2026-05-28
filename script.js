@@ -1015,7 +1015,7 @@ function switchHubTab(tabId) {
                 });
             }
 
-            // Animate steps appearing
+            // Animate steps appearing — fire immediately when each step enters view
             const steps = document.querySelectorAll('.step');
             steps.forEach((step, i) => {
                 gsap.fromTo(step,
@@ -1023,12 +1023,15 @@ function switchHubTab(tabId) {
                     {
                         opacity: 1,
                         x: 0,
+                        duration: 0.6,
+                        ease: "power2.out",
                         scrollTrigger: {
                             trigger: step,
                             scroller: "#portfolio-overlay",
-                            start: "top 85%",
-                            end: "top 60%",
-                            scrub: 1
+                            start: "top 100%",
+                            end: "top 70%",
+                            scrub: false,
+                            toggleActions: "play none none none"
                         }
                     }
                 );
