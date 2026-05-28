@@ -237,9 +237,12 @@ class LaserFlowBackground {
 }
 
 function initTextAnimations() {
+    // Only target elements that are pure text or specific headings
     const targets = document.querySelectorAll('.section-title, .hero-content h1');
     targets.forEach(target => {
         const text = target.textContent.trim();
+        if (!text) return;
+
         target.innerHTML = '';
         [...text].forEach((char, i) => {
             const span = document.createElement('span');
@@ -248,6 +251,19 @@ function initTextAnimations() {
             span.style.setProperty('--char-delay', `${i * 0.02}s`);
             target.appendChild(span);
         });
+
+        if (target.closest('.hero')) {
+            target.classList.add('active');
+        }
+    });
+
+    // For other reveal elements that might contain HTML (like the hero subtext), 
+    // just ensure they have the 'active' class to trigger the CSS revealText animation
+    const simpleReveals = document.querySelectorAll('.reveal-text:not(.section-title):not(h1)');
+    simpleReveals.forEach(el => {
+        if (el.closest('.hero')) {
+            el.classList.add('active');
+        }
     });
 }
 
@@ -272,14 +288,12 @@ function initPillNav() {
             const label = link.querySelector('.pill-label');
             const labelH = link.querySelector('.pill-label-hover');
 
-            // Skip if inner elements are missing to prevent crash
             if (!circle || !label || !labelH) return;
 
             const rect = link.getBoundingClientRect();
             const w = rect.width;
             const h = rect.height;
 
-            // Premium Radius Calculation: R = ((w^2)/4 + h^2) / (2h)
             const R = ((w * w) / 4 + h * h) / (2 * h);
             const D = Math.ceil(2 * R) + 2;
             const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
@@ -303,25 +317,25 @@ function initPillNav() {
                 .to(labelH, { y: 0, opacity: 1, duration: 0.6, ease }, 0.1);
 
             tls.set(link, tl);
-
-            const onEnter = () => {
-                activeTweens.get(link)?.kill();
-                const twin = tl.tweenTo(tl.duration(), { duration: 0.4, ease, overwrite: 'auto' });
-                activeTweens.set(link, twin);
-            };
-
-            const onLeave = () => {
-                activeTweens.get(link)?.kill();
-                const twin = tl.tweenTo(0, { duration: 0.3, ease, overwrite: 'auto' });
-                activeTweens.set(link, twin);
-            };
-
-            link.removeEventListener('mouseenter', onEnter);
-            link.removeEventListener('mouseleave', onLeave);
-            link.addEventListener('mouseenter', onEnter);
-            link.addEventListener('mouseleave', onLeave);
         });
     };
+
+    items.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            const tl = tls.get(link);
+            if (!tl) return;
+            activeTweens.get(link)?.kill();
+            const twin = tl.tweenTo(tl.duration(), { duration: 0.4, ease, overwrite: 'auto' });
+            activeTweens.set(link, twin);
+        });
+        link.addEventListener('mouseleave', () => {
+            const tl = tls.get(link);
+            if (!tl) return;
+            activeTweens.get(link)?.kill();
+            const twin = tl.tweenTo(0, { duration: 0.3, ease, overwrite: 'auto' });
+            activeTweens.set(link, twin);
+        });
+    });
 
     const logoWrapper = nav.querySelector('.pill-nav-logo-link');
     if (logoWrapper && logoImg) {
@@ -363,6 +377,33 @@ function initPillNav() {
 
     setupAnimations();
     entrance();
+
+    // MAGNETIC LOGO & LINKS
+    const magnets = document.querySelectorAll('.pill-nav-logo-link, .pill-nav-link');
+    magnets.forEach(m => {
+        m.addEventListener('mousemove', (e) => {
+            const rect = m.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(m, {
+                x: x * 0.35,
+                y: y * 0.35,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+        });
+        m.addEventListener('mouseleave', () => {
+            gsap.to(m, {
+                x: 0,
+                y: 0,
+                duration: 0.8,
+                ease: "elastic.out(1, 0.4)"
+            });
+        });
+    });
+
+
 
     window.addEventListener('resize', setupAnimations);
 }
@@ -669,19 +710,7 @@ class WavesBackground {
 
 // --- Existing Logic ---
 
-const cursor = document.getElementById('custom-cursor');
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-document.addEventListener('mousedown', () => {
-    cursor.style.transform = 'scale(0.8)';
-});
-
-document.addEventListener('mouseup', () => {
-    cursor.style.transform = 'scale(1)';
-});
+// Old cursor code removed — cursor is handled by initCustomCursor() below
 
 
 
@@ -772,41 +801,37 @@ navLinks.forEach(link => {
 // Dynamic Text Rotator Logic
 const dynamicText = document.getElementById('dynamic-text');
 const phrases = [
-    "a Creative Developer.",
-    "a UI/UX Designer.",
-    "a Full Stack Engineer.",
-    "a Problem Solver."
+    "I am a Creative Developer.",
+    "I am a UI/UX Designer.",
+    "I am a Full Stack Engineer.",
+    "I am a Problem Solver."
 ];
 
 let phraseIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
-let typingSpeed = 100;
+let typingSpeed = 80;
 
 function typeEffect() {
     const currentPhrase = phrases[phraseIndex];
 
     if (isDeleting) {
-        // Remove character
         dynamicText.textContent = currentPhrase.substring(0, charIndex - 1);
         charIndex--;
-        typingSpeed = 50;
+        typingSpeed = 40;
     } else {
-        // Add character
         dynamicText.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
-        typingSpeed = 100;
+        typingSpeed = 80;
     }
 
     if (!isDeleting && charIndex === currentPhrase.length) {
-        // Phrase complete, wait before deleting
         isDeleting = true;
-        typingSpeed = 2000;
+        typingSpeed = 2500;
     } else if (isDeleting && charIndex === 0) {
-        // Phrase deleted, move to next
         isDeleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
-        typingSpeed = 500;
+        typingSpeed = 800;
     }
 
     setTimeout(typeEffect, typingSpeed);
@@ -841,6 +866,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Type Effect
     setTimeout(typeEffect, 1000);
+
+    // CLICK RIPPLE EFFECT - Cinematic Flair
+    document.addEventListener('click', (e) => {
+        const ripple = document.createElement('div');
+        ripple.className = 'click-ripple';
+        document.body.appendChild(ripple);
+
+        const size = 100;
+        gsap.set(ripple, {
+            width: size,
+            height: size,
+            left: e.clientX - size / 2,
+            top: e.clientY - size / 2,
+            opacity: 0.4,
+            scale: 0
+        });
+
+        gsap.to(ripple, {
+            scale: 4,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+            onComplete: () => ripple.remove()
+        });
+    });
 
     // Final Refresh
     setTimeout(() => {
@@ -985,76 +1035,76 @@ function switchHubTab(tabId) {
             });
         }, 300);
     }
-// ── ADD THIS BLOCK inside switchHubTab(), after the existing 'qualifications' block ──
-// Place it right before the closing } of switchHubTab()
+    // ── ADD THIS BLOCK inside switchHubTab(), after the existing 'qualifications' block ──
+    // Place it right before the closing } of switchHubTab()
 
-if (tabId === 'skills') {
-    setTimeout(() => {
-        const line = document.getElementById('skills-progress-line');
-        const lineSec = document.getElementById('skills-progress-line-secondary');
+    if (tabId === 'skills') {
+        setTimeout(() => {
+            const line = document.getElementById('skills-progress-line');
+            const lineSec = document.getElementById('skills-progress-line-secondary');
 
-        ScrollTrigger.getAll()
-    .filter(st => st.vars.trigger === ".hub-stepper" || st.vars.trigger === ".skills-stepper")
-    .forEach(st => st.kill());
+            ScrollTrigger.getAll()
+                .filter(st => st.vars.trigger === ".hub-stepper" || st.vars.trigger === ".skills-stepper")
+                .forEach(st => st.kill());
 
-        if (line) {
-            const len = line.getTotalLength();
-            line.style.strokeDasharray = len;
-            line.style.strokeDashoffset = len;
-            gsap.killTweensOf(line);
-            gsap.to(line, {
-                strokeDashoffset: 0,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".skills-stepper",
-                    scroller: "#portfolio-overlay",
-                    start: "top 40%",
-                    end: "bottom 60%",
-                    scrub: 1,
-                    invalidateOnRefresh: true
-                }
-            });
-        }
-
-        if (lineSec) {
-            const lenSec = lineSec.getTotalLength();
-            lineSec.style.strokeDasharray = lenSec;
-            lineSec.style.strokeDashoffset = lenSec;
-            gsap.killTweensOf(lineSec);
-            gsap.to(lineSec, {
-                strokeDashoffset: 0,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".skills-stepper",
-                    scroller: "#portfolio-overlay",
-                    start: "top 40%",
-                    end: "bottom 60%",
-                    scrub: 1,
-                    invalidateOnRefresh: true
-                }
-            });
-        }
-
-        // Animate skill steps appearing (same as qualification steps)
-        const skillSteps = document.querySelectorAll('.skill-step');
-        skillSteps.forEach((step, i) => {
-            gsap.fromTo(step,
-                { opacity: 0, x: i % 2 === 0 ? 50 : -50 },
-                {
-                    opacity: 1,
-                    x: 0,
+            if (line) {
+                const len = line.getTotalLength();
+                line.style.strokeDasharray = len;
+                line.style.strokeDashoffset = len;
+                gsap.killTweensOf(line);
+                gsap.to(line, {
+                    strokeDashoffset: 0,
+                    ease: "none",
                     scrollTrigger: {
-                        trigger: step,
+                        trigger: ".skills-stepper",
                         scroller: "#portfolio-overlay",
-                        start: "top 85%",
-                        end: "top 60%",
-                        scrub: 1
+                        start: "top 40%",
+                        end: "bottom 60%",
+                        scrub: 1,
+                        invalidateOnRefresh: true
                     }
-                }
-            );
-        });
-    }, 300);
-}
+                });
+            }
+
+            if (lineSec) {
+                const lenSec = lineSec.getTotalLength();
+                lineSec.style.strokeDasharray = lenSec;
+                lineSec.style.strokeDashoffset = lenSec;
+                gsap.killTweensOf(lineSec);
+                gsap.to(lineSec, {
+                    strokeDashoffset: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".skills-stepper",
+                        scroller: "#portfolio-overlay",
+                        start: "top 40%",
+                        end: "bottom 60%",
+                        scrub: 1,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
+
+            // Animate skill steps appearing (same as qualification steps)
+            const skillSteps = document.querySelectorAll('.skill-step');
+            skillSteps.forEach((step, i) => {
+                gsap.fromTo(step,
+                    { opacity: 0, x: i % 2 === 0 ? 50 : -50 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        scrollTrigger: {
+                            trigger: step,
+                            scroller: "#portfolio-overlay",
+                            start: "top 85%",
+                            end: "top 60%",
+                            scrub: 1
+                        }
+                    }
+                );
+            });
+        }, 300);
+    }
 
 }
 
@@ -1116,11 +1166,20 @@ document.addEventListener('mousemove', (e) => {
     let lastScrollY = window.scrollY;
     let ticking = false;
 
+    const scrollBar = document.getElementById('scroll-bar');
+
     window.addEventListener('scroll', () => {
         if (ticking) return;
         ticking = true;
 
         requestAnimationFrame(() => {
+            // Update Scroll Progress
+            if (scrollBar) {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (window.scrollY / totalHeight) * 100;
+                scrollBar.style.width = `${progress}%`;
+            }
+
             // Don't hide if the hub overlay is open
             const overlay = document.getElementById('portfolio-overlay');
             if (overlay && overlay.classList.contains('active')) {
@@ -1189,3 +1248,238 @@ function initProjectFilters() {
     });
 }
 initProjectFilters();
+
+// ============================================================
+// SENIOR-LEVEL SECURITY HARDENING & "UNHACKABLE" VIBE
+// ============================================================
+(function securityShield() {
+    // 1. Disable Right-Click
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // 2. Disable Keyboard Shortcuts for Inspect/Source
+    document.addEventListener('keydown', e => {
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+            (e.ctrlKey && e.key === 'U')
+        ) {
+            e.preventDefault();
+            console.warn('%cSECURITY ALERT: Unauthorized access attempt detected.', 'color: red; font-size: 16px; font-weight: bold;');
+        }
+    });
+
+    // 3. Anti-Copy Protection
+    document.addEventListener('copy', e => {
+        e.preventDefault();
+        console.log('%cCOPY PROTECTION: Content extraction is disabled.', 'color: #bc00dd; font-weight: bold;');
+    });
+
+    // 4. Senior Developer Console Message
+    console.log(
+        "%cJeet | Creative Engineer\n%cSystem secure. All assets protected by Jeet-Dev Core.\n%cInterested in how this works? Let's connect.",
+        "color: #bc00dd; font-size: 24px; font-weight: bold;",
+        "color: #888; font-size: 14px;",
+        "color: #00ff00; font-size: 12px; font-style: italic;"
+    );
+})();
+
+// ============================================================
+// PREMIUM INTERACTIVE CURSOR (Senior Dev Polish)
+// ============================================================
+function initCustomCursor() {
+    const cursor = document.createElement('div');
+    const dot = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    dot.className = 'cursor-dot';
+    document.body.appendChild(cursor);
+    document.body.appendChild(dot);
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    // Force immediate activation
+    document.body.classList.add('cursor-active');
+
+    // Mobile check - Senior devs know not to show custom cursors on touch devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.body.classList.remove('cursor-active');
+        return;
+    }
+
+    window.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        // Immediate dot movement
+        gsap.set(dot, { x: mouseX, y: mouseY });
+    });
+
+    // Smooth trailing effect
+    gsap.ticker.add(() => {
+        const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
+        cursorX += (mouseX - cursorX) * dt;
+        cursorY += (mouseY - cursorY) * dt;
+        gsap.set(cursor, { x: cursorX, y: cursorY });
+    });
+
+    // Add Cursor Aura - Creative Flair
+    const aura = document.createElement('div');
+    aura.className = 'cursor-aura';
+    document.body.appendChild(aura);
+
+    gsap.ticker.add(() => {
+        gsap.to(aura, {
+            x: mouseX,
+            y: mouseY,
+            duration: 0.65, // More lag for organic feel
+            ease: "power2.out"
+        });
+    });
+
+    // Hover states — expanded list for premium consistency
+    const interactiveElements = document.querySelectorAll('.project-card, .filter-btn, .pill-hotspot, .social-pill, .btn, .pill-nav-link, .pill-nav-logo-link, .contact-email-link, .hub-back-btn, .skill-step-badge');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            dot.classList.add('hover');
+            aura.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+            dot.classList.remove('hover');
+            aura.classList.remove('hover');
+        });
+    });
+}
+initCustomCursor();
+
+// --- SMOOTH PAGE ENTRANCE ---
+window.addEventListener('load', () => {
+    // Staggered entrance: fade body in, then animate key elements
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.to('body', {
+        opacity: 1,
+        duration: 0.6,
+    })
+    .from('.pill-nav-container', {
+        y: -30,
+        opacity: 0,
+        duration: 0.7,
+        clearProps: 'all'
+    }, '-=0.2')
+    .from('.hero-content h1', {
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        clearProps: 'all'
+    }, '-=0.4')
+    .from('.hero-content p', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        clearProps: 'all'
+    }, '-=0.6')
+    .from('.hero-scroll-cta', {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        clearProps: 'all'
+    }, '-=0.5')
+    .from('.hero-identity-bar', {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        clearProps: 'all'
+    }, '-=0.5');
+});
+
+
+// ── Smooth Magnification Dock ──
+(function () {
+    const dock = document.getElementById('heroDock');
+    if (!dock) return;
+
+    const items = dock.querySelectorAll('.dock-item');
+
+    const maxDist = 100;
+    const maxScale = 1.8;
+
+    let mouseX = 0;
+    let raf = null;
+
+    // smoother transitions
+    items.forEach(item => {
+        item.style.transition =
+            'width 0.22s cubic-bezier(0.25, 1, 0.5, 1), height 0.22s cubic-bezier(0.25, 1, 0.5, 1)';
+
+        const svg = item.querySelector('svg');
+        if (svg) {
+            svg.style.transition =
+                'width 0.22s cubic-bezier(0.25, 1, 0.5, 1), height 0.22s cubic-bezier(0.25, 1, 0.5, 1)';
+        }
+    });
+
+    function updateDock() {
+        items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const dist = Math.abs(mouseX - centerX);
+
+            if (dist < maxDist) {
+
+                // smoother curve
+                const influence = 1 - dist / maxDist;
+                const scale =
+                    1 +
+                    (maxScale - 1) *
+                    Math.pow(influence, 2.5);
+
+                const size = 44 * scale;
+                const iconSize = 18 * scale;
+
+                item.style.width = `${size}px`;
+                item.style.height = `${size}px`;
+
+                const svg = item.querySelector('svg');
+                if (svg) {
+                    svg.style.width = `${iconSize}px`;
+                    svg.style.height = `${iconSize}px`;
+                }
+
+            } else {
+                item.style.width = '44px';
+                item.style.height = '44px';
+
+                const svg = item.querySelector('svg');
+                if (svg) {
+                    svg.style.width = '18px';
+                    svg.style.height = '18px';
+                }
+            }
+        });
+
+        raf = null;
+    }
+
+    dock.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+
+        if (!raf) {
+            raf = requestAnimationFrame(updateDock);
+        }
+    });
+
+    dock.addEventListener('mouseleave', () => {
+        items.forEach(item => {
+            item.style.width = '44px';
+            item.style.height = '44px';
+
+            const svg = item.querySelector('svg');
+            if (svg) {
+                svg.style.width = '18px';
+                svg.style.height = '18px';
+            }
+        });
+    });
+})();
