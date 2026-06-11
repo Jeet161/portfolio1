@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none">
+  <!-- Groq "G" icon mark -->
+  <rect width="40" height="40" rx="8" fill="#F55036"/>
+  <path d="M20 8C13.373 8 8 13.373 8 20C8 26.627 13.373 32 20 32C26.627 32 32 26.627 32 20V19H20V22H28.3C27.3 26.1 24 29 20 29C15.03 29 11 24.97 11 20C11 15.03 15.03 11 20 11C22.3 11 24.4 11.9 25.97 13.4L28.1 11.27C26.03 9.3 23.17 8 20 8Z" fill="white"/>
+  <!-- "roq" wordmark -->
+  <text x="46" y="27" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#F55036" letter-spacing="-0.5">roq</text>
+</svg>
