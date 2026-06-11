@@ -987,6 +987,7 @@ body.cursor-active .cursor-dot {
 
 .tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.75rem;
 }
 
@@ -1004,6 +1005,7 @@ body.cursor-active .cursor-dot {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
 }
 
 /* CTA Project Card */
