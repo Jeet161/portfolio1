@@ -730,7 +730,7 @@ const revealOnScroll = () => {
 window.addEventListener('scroll', revealOnScroll);
 window.addEventListener('load', revealOnScroll);
 
-// Tilted Card Logic
+// Tilted Card Logic & Click to Flip Interaction
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {
@@ -739,6 +739,7 @@ projectCards.forEach(card => {
     let rafId = null;
 
     const handleMove = (x, y) => {
+        if (card.classList.contains('flipped')) return; // Ignore tilt updates if the card is flipped
         if (rafId) cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(() => {
             const rect = card.getBoundingClientRect();
@@ -750,14 +751,20 @@ projectCards.forEach(card => {
             const rotateY = ((relX - centerX) / centerX) * 10;
 
             inner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-            tooltip.style.left = `${x + 15}px`;
-            tooltip.style.top = `${y + 15}px`;
+            if (tooltip) {
+                tooltip.style.left = `${x + 15}px`;
+                tooltip.style.top = `${y + 15}px`;
+            }
         });
     };
 
     const handleReset = () => {
         if (rafId) cancelAnimationFrame(rafId);
-        inner.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        if (card.classList.contains('flipped')) {
+            inner.style.transform = `perspective(1600px) rotateY(180deg)`;
+        } else {
+            inner.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        }
     };
 
     card.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
@@ -768,6 +775,22 @@ projectCards.forEach(card => {
         handleMove(touch.clientX, touch.clientY);
     }, { passive: true });
     card.addEventListener('touchend', handleReset);
+
+    // Toggle 3D Flip on Click (excluding the CTA card)
+    if (!card.classList.contains('cta-project-card')) {
+        card.addEventListener('click', () => {
+            card.classList.add('flipping');
+            card.classList.toggle('flipped');
+            if (card.classList.contains('flipped')) {
+                inner.style.transform = `perspective(1600px) rotateY(180deg)`;
+            } else {
+                inner.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1.05, 1.05, 1.05)`;
+            }
+            setTimeout(() => {
+                card.classList.remove('flipping');
+            }, 800);
+        });
+    }
 });
 
 // Premium CTA Glow Logic
@@ -850,6 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPillNav();
     initJourneyLine();
     initAboutTicker();
+    initProjectFlips();
 
     // Backgrounds
     if (window.THREE) {
@@ -1252,6 +1276,128 @@ function initProjectFilters() {
 }
 initProjectFilters();
 
+// Dynamic 3D Card Flipping Setup
+function initProjectFlips() {
+    const cards = document.querySelectorAll('.project-card:not(.cta-project-card)');
+    cards.forEach((card, cardIndex) => {
+        const inner = card.querySelector('.project-inner');
+        if (!inner) return;
+
+        const imgContainer = card.querySelector('.project-image-container');
+        const overlay = card.querySelector('.project-overlay');
+        if (!imgContainer || !overlay) return;
+
+        const tags = overlay.querySelector('.tags');
+        const num = overlay.querySelector('.project-num');
+        const title = overlay.querySelector('h3');
+        const desc = overlay.querySelector('p');
+        const techSpans = tags ? Array.from(tags.querySelectorAll('span')) : [];
+
+        // ── FRONT FACE ──────────────────────────────────────────
+        const front = document.createElement('div');
+        front.className = 'project-front';
+
+        const imgClone = imgContainer.cloneNode(true);
+        front.appendChild(imgClone);
+
+        const frontOverlay = document.createElement('div');
+        frontOverlay.className = 'project-overlay';
+        if (tags) frontOverlay.appendChild(tags.cloneNode(true));
+        if (num) frontOverlay.appendChild(num.cloneNode(true));
+        if (title) frontOverlay.appendChild(title.cloneNode(true));
+
+        // Tech count badge on front
+        if (techSpans.length > 0) {
+            const techBadge = document.createElement('div');
+            techBadge.className = 'card-tech-count';
+            techBadge.innerHTML = `<span class="tech-dot"></span>${techSpans.length} technologies`;
+            frontOverlay.appendChild(techBadge);
+        }
+
+        front.appendChild(frontOverlay);
+
+        // Flip hint on front
+        const hintFront = document.createElement('div');
+        hintFront.className = 'flip-hint';
+        hintFront.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>Click to explore`;
+        front.appendChild(hintFront);
+
+        // ── BACK FACE ───────────────────────────────────────────
+        const back = document.createElement('div');
+        back.className = 'project-back';
+
+        // Decorative dot-grid background
+        const dotGrid = document.createElement('div');
+        dotGrid.className = 'card-back-dotgrid';
+        back.appendChild(dotGrid);
+
+        // Glowing accent bar at top
+        const accentBar = document.createElement('div');
+        accentBar.className = 'card-back-accent';
+        back.appendChild(accentBar);
+
+        // Back content wrapper
+        const backContent = document.createElement('div');
+        backContent.className = 'project-back-content';
+
+        // Project index label
+        const indexLabel = document.createElement('div');
+        indexLabel.className = 'card-back-index';
+        indexLabel.textContent = num ? num.textContent : `0${cardIndex + 1}`;
+        backContent.appendChild(indexLabel);
+
+        // Title
+        if (title) {
+            const titleClone = title.cloneNode(true);
+            backContent.appendChild(titleClone);
+        }
+
+        // Divider
+        const divider = document.createElement('div');
+        divider.className = 'card-back-divider';
+        backContent.appendChild(divider);
+
+        // Full description
+        if (desc) {
+            const descClone = desc.cloneNode(true);
+            backContent.appendChild(descClone);
+        }
+
+        // Tech chip tags
+        if (techSpans.length > 0) {
+            const techSection = document.createElement('div');
+            techSection.className = 'card-back-tech';
+            const techLabel = document.createElement('span');
+            techLabel.className = 'card-back-tech-label';
+            techLabel.textContent = 'Stack';
+            techSection.appendChild(techLabel);
+            const chipRow = document.createElement('div');
+            chipRow.className = 'card-back-chips';
+            techSpans.forEach(s => {
+                const chip = document.createElement('span');
+                chip.className = 'card-back-chip';
+                chip.textContent = s.textContent;
+                chipRow.appendChild(chip);
+            });
+            techSection.appendChild(chipRow);
+            backContent.appendChild(techSection);
+        }
+
+        back.appendChild(backContent);
+
+        // Flip back hint
+        const hintBack = document.createElement('div');
+        hintBack.className = 'flip-hint';
+        hintBack.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/></svg>Click to close`;
+        back.appendChild(hintBack);
+
+        // ── REBUILD INNER ────────────────────────────────────────
+        inner.innerHTML = '';
+        inner.appendChild(front);
+        inner.appendChild(back);
+    });
+}
+
 // ============================================================
 // SENIOR-LEVEL SECURITY HARDENING & "UNHACKABLE" VIBE
 // ============================================================
@@ -1325,18 +1471,17 @@ function initCustomCursor() {
         gsap.set(cursor, { x: cursorX, y: cursorY });
     });
 
-    // Add Cursor Aura - Creative Flair
+    // Add Cursor Aura - Creative Flair (lerp-based, no per-frame tween spawning)
     const aura = document.createElement('div');
     aura.className = 'cursor-aura';
     document.body.appendChild(aura);
 
+    let auraX = 0, auraY = 0;
     gsap.ticker.add(() => {
-        gsap.to(aura, {
-            x: mouseX,
-            y: mouseY,
-            duration: 0.65, // More lag for organic feel
-            ease: "power2.out"
-        });
+        const speed = 1.0 - Math.pow(1.0 - 0.08, gsap.ticker.deltaRatio());
+        auraX += (mouseX - auraX) * speed;
+        auraY += (mouseY - auraY) * speed;
+        gsap.set(aura, { x: auraX, y: auraY });
     });
 
     // Hover states — expanded list for premium consistency

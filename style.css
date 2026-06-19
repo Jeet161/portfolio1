@@ -107,8 +107,7 @@ body.cursor-active .filter-btn {
 .custom-cursor {
     width: 32px;
     height: 32px;
-    border: 1.5px solid #FFFFFF;
-    /* High contrast */
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
@@ -117,8 +116,7 @@ body.cursor-active .filter-btn {
     left: -16px;
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     display: none;
-    mix-blend-mode: difference;
-    /* Critical: Inverts color based on background */
+    background: transparent;
 }
 
 body.cursor-active .custom-cursor,
@@ -127,20 +125,17 @@ body.cursor-active .cursor-dot {
 }
 
 .cursor-dot {
-    width: 10px;
-    /* Larger dot for better focus */
-    height: 10px;
+    width: 6px;
+    height: 6px;
     background-color: #FFFFFF;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 1000001;
-    top: -5px;
-    left: -5px;
+    top: -3px;
+    left: -3px;
     display: none;
-    mix-blend-mode: difference;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    /* Subtle glow */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .custom-cursor.hover {
@@ -798,7 +793,7 @@ body.cursor-active .cursor-dot {
     height: 100%;
     background: transparent;
     cursor: none;
-    perspective: 1200px;
+    perspective: 1600px;
     grid-column: span 4;
     grid-row: span 2;
 }
@@ -864,8 +859,228 @@ body.cursor-active .cursor-dot {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
+    transition: transform 0.1s ease-out; /* Snappy tilt transition */
 }
+
+/* Smooth transition only when flipping */
+.project-card.flipping .project-inner,
+.project-card.flipped .project-inner {
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* Hold the flipped state via class */
+.project-card.flipped .project-inner {
+    transform: perspective(1600px) rotateY(180deg) !important;
+}
+
+/* Pointer cursor on clickable project cards */
+.project-card:not(.cta-project-card) {
+    cursor: pointer !important;
+}
+
+/* Flip hint label */
+.flip-hint {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.3s ease;
+}
+
+.flip-hint svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+}
+
+.project-card:not(.cta-project-card):hover .flip-hint {
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 3D Card Front & Back Panels */
+.project-front,
+.project-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.project-front {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.project-back {
+    transform: rotateY(180deg);
+    background: rgba(10, 10, 10, 0.95);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(255, 255, 255, 0.02);
+    z-index: 1;
+}
+
+.project-back-content {
+    width: 100%;
+    height: 100%;
+    padding: 1.6rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    gap: 0.5rem;
+}
+
+.project-back-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0;
+    color: white;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.project-back-content p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    overflow: visible !important;
+}
+
+/* ── Back card decorative elements ─────────────────────── */
+
+/* Dot grid background */
+.card-back-dotgrid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+    z-index: 0;
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+/* Top glowing accent bar */
+.card-back-accent {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    border-radius: 0 0 4px 4px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Large faded project number */
+.card-back-index {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    letter-spacing: -2px;
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+/* Thin divider between title and description */
+.card-back-divider {
+    width: 36px;
+    height: 2px;
+    background: linear-gradient(90deg, #fff, rgba(255,255,255,0.15));
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* Stack section */
+.card-back-tech {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.card-back-tech-label {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+}
+
+/* Tech chip row */
+.card-back-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.card-back-chip {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-card.flipped .card-back-chip:hover {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+}
+
+/* Tech count badge on front overlay */
+.card-tech-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.3rem;
+}
+
+.tech-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    animation: dock-pulse 2s infinite;
+}
+
+
 
 .project-image-container {
     position: relative;
@@ -1610,6 +1825,31 @@ footer {
     color: #8b5cf6 !important;
     -webkit-text-fill-color: #8b5cf6 !important;
 }
+
+.ticker-text .tech-iot,
+.tech-iot {
+    color: #22d3ee !important;
+    -webkit-text-fill-color: #22d3ee !important;
+    -webkit-text-stroke: 0 !important;
+    background: none !important;
+}
+
+.ticker-text .tech-arduino,
+.tech-arduino {
+    color: #00979d !important;
+    -webkit-text-fill-color: #00979d !important;
+    -webkit-text-stroke: 0 !important;
+    background: none !important;
+}
+
+.ticker-text .tech-sensor,
+.tech-sensor {
+    color: #34d399 !important;
+    -webkit-text-fill-color: #34d399 !important;
+    -webkit-text-stroke: 0 !important;
+    background: none !important;
+}
+
 
 #about .section-title {
     margin-top: 5rem;
