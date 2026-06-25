@@ -1161,8 +1161,37 @@ function filterSkills(category) {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closePortfolio();
+        closeVideoModal();
     }
 });
+
+// Video Modal Controls
+function openVideoModal(videoId) {
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('video-iframe');
+    if (!modal || !iframe) return;
+
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('overlay-open');
+}
+
+function closeVideoModal() {
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('video-iframe');
+    if (!modal || !iframe) return;
+
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    iframe.src = '';
+
+    // Only remove class if the main portfolio overlay is not open
+    const portfolioOverlay = document.getElementById('portfolio-overlay');
+    if (!portfolioOverlay || !portfolioOverlay.classList.contains('active')) {
+        document.body.classList.remove('overlay-open');
+    }
+}
 
 // Creative Mouse-Tracking for Skill Cards
 document.addEventListener('mousemove', (e) => {
@@ -1383,6 +1412,33 @@ function initProjectFlips() {
             backContent.appendChild(techSection);
         }
 
+        // Project metadata (Role, Duration, Status, etc.)
+        const role = card.getAttribute('data-role');
+        const duration = card.getAttribute('data-duration');
+        const status = card.getAttribute('data-status');
+        const type = card.getAttribute('data-type');
+
+        if (role || duration || status || type) {
+            const metaContainer = document.createElement('div');
+            metaContainer.className = 'card-back-metadata';
+
+            if (role) {
+                metaContainer.innerHTML += `<div><strong>Role:</strong> ${role}</div>`;
+            }
+            if (duration) {
+                metaContainer.innerHTML += `<div><strong>Duration:</strong> ${duration}</div>`;
+            }
+            if (status) {
+                metaContainer.innerHTML += `<div><strong>Status:</strong> ${status}</div>`;
+            }
+            if (type) {
+                metaContainer.innerHTML += `<div><strong>Type:</strong> ${type}</div>`;
+            }
+            backContent.appendChild(metaContainer);
+        }
+
+        // Add watch video button if data-video is set (REMOVED: Play directly on card click)
+
         back.appendChild(backContent);
 
         // Flip back hint
@@ -1443,8 +1499,35 @@ function initCustomCursor() {
     document.body.appendChild(cursor);
     document.body.appendChild(dot);
 
+    // Dynamic Trail Dots
+    const trailCount = 6;
+    const trailDots = [];
+    for (let i = 0; i < trailCount; i++) {
+        const tDot = document.createElement('div');
+        tDot.className = 'cursor-trail-dot';
+        const size = 6 - (i * 0.7); // Taper sizes
+        tDot.style.width = `${size}px`;
+        tDot.style.height = `${size}px`;
+        tDot.style.opacity = (1 - (i / trailCount)) * 0.55;
+        document.body.appendChild(tDot);
+        trailDots.push({
+            el: tDot,
+            x: 0,
+            y: 0
+        });
+    }
+
+    // Add Cursor Aura - Creative Flair (lerp-based, no per-frame tween spawning)
+    const aura = document.createElement('div');
+    aura.className = 'cursor-aura';
+    document.body.appendChild(aura);
+
+    // Center all cursor components perfectly using GSAP percent translations
+    gsap.set([cursor, dot, aura, ...trailDots.map(d => d.el)], { xPercent: -50, yPercent: -50 });
+
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
+    let auraX = 0, auraY = 0;
 
     // Force immediate activation
     document.body.classList.add('cursor-active');
@@ -1469,34 +1552,48 @@ function initCustomCursor() {
         cursorX += (mouseX - cursorX) * dt;
         cursorY += (mouseY - cursorY) * dt;
         gsap.set(cursor, { x: cursorX, y: cursorY });
-    });
 
-    // Add Cursor Aura - Creative Flair (lerp-based, no per-frame tween spawning)
-    const aura = document.createElement('div');
-    aura.className = 'cursor-aura';
-    document.body.appendChild(aura);
-
-    let auraX = 0, auraY = 0;
-    gsap.ticker.add(() => {
         const speed = 1.0 - Math.pow(1.0 - 0.08, gsap.ticker.deltaRatio());
         auraX += (mouseX - auraX) * speed;
         auraY += (mouseY - auraY) * speed;
         gsap.set(aura, { x: auraX, y: auraY });
+
+        // Smooth chain lag trail dots
+        let prevX = mouseX;
+        let prevY = mouseY;
+        trailDots.forEach((t, index) => {
+            const ratio = 0.35 - (index * 0.04);
+            const lerpRatio = 1.0 - Math.pow(1.0 - ratio, gsap.ticker.deltaRatio());
+            t.x += (prevX - t.x) * lerpRatio;
+            t.y += (prevY - t.y) * lerpRatio;
+            gsap.set(t.el, { x: t.x, y: t.y });
+            prevX = t.x;
+            prevY = t.y;
+        });
     });
 
-    // Hover states — expanded list for premium consistency
-    const interactiveElements = document.querySelectorAll('.project-card, .filter-btn, .pill-hotspot, .social-pill, .btn, .pill-nav-link, .pill-nav-logo-link, .contact-email-link, .hub-back-btn, .skill-step-badge');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
+    // Event Delegation: Premium consistency even for dynamically rendered elements
+    const hoverSelector = '.project-card, .filter-btn, .pill-hotspot, .social-pill, .btn, .pill-nav-link, .pill-nav-logo-link, .contact-email-link, .hub-back-btn, .skill-step-badge, a, button, [role="button"]';
+
+    document.body.addEventListener('mouseover', e => {
+        const target = e.target.closest(hoverSelector);
+        if (target) {
             cursor.classList.add('hover');
             dot.classList.add('hover');
             aura.classList.add('hover');
-        });
-        el.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
-            dot.classList.remove('hover');
-            aura.classList.remove('hover');
-        });
+        }
+    });
+
+    document.body.addEventListener('mouseout', e => {
+        const target = e.target.closest(hoverSelector);
+        if (target) {
+            const related = e.relatedTarget;
+            if (!related || !target.contains(related)) {
+                cursor.classList.remove('hover');
+                dot.classList.remove('hover');
+                aura.classList.remove('hover');
+            }
+        }
     });
 }
 initCustomCursor();
@@ -1510,36 +1607,36 @@ window.addEventListener('load', () => {
         opacity: 1,
         duration: 0.6,
     })
-    .from('.pill-nav-container', {
-        y: -30,
-        opacity: 0,
-        duration: 0.7,
-        clearProps: 'all'
-    }, '-=0.2')
-    .from('.hero-content h1', {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        clearProps: 'all'
-    }, '-=0.4')
-    .from('.hero-content p', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        clearProps: 'all'
-    }, '-=0.6')
-    .from('.hero-scroll-cta', {
-        y: 20,
-        opacity: 0,
-        duration: 0.7,
-        clearProps: 'all'
-    }, '-=0.5')
-    .from('.hero-identity-bar', {
-        y: 20,
-        opacity: 0,
-        duration: 0.7,
-        clearProps: 'all'
-    }, '-=0.5');
+        .from('.pill-nav-container', {
+            y: -30,
+            opacity: 0,
+            duration: 0.7,
+            clearProps: 'all'
+        }, '-=0.2')
+        .from('.hero-content h1', {
+            y: 40,
+            opacity: 0,
+            duration: 0.9,
+            clearProps: 'all'
+        }, '-=0.4')
+        .from('.hero-content p', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            clearProps: 'all'
+        }, '-=0.6')
+        .from('.hero-scroll-cta', {
+            y: 20,
+            opacity: 0,
+            duration: 0.7,
+            clearProps: 'all'
+        }, '-=0.5')
+        .from('.hero-identity-bar', {
+            y: 20,
+            opacity: 0,
+            duration: 0.7,
+            clearProps: 'all'
+        }, '-=0.5');
 });
 
 

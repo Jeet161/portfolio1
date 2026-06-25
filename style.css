@@ -105,18 +105,19 @@ body.cursor-active .filter-btn {
 
 /* Custom Cursor - Senior Polish */
 .custom-cursor {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border: 1.5px solid rgba(255, 255, 255, 0.85);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 1000000;
-    top: -16px;
-    left: -16px;
+    top: 0;
+    left: 0;
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     display: none;
     background: transparent;
+    mix-blend-mode: difference;
 }
 
 body.cursor-active .custom-cursor,
@@ -125,22 +126,39 @@ body.cursor-active .cursor-dot {
 }
 
 .cursor-dot {
-    width: 6px;
-    height: 6px;
+    width: 9px;
+    height: 9px;
     background-color: #FFFFFF;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 1000001;
-    top: -3px;
-    left: -3px;
+    top: 0;
+    left: 0;
     display: none;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    mix-blend-mode: difference;
+}
+
+.cursor-trail-dot {
+    position: fixed;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    pointer-events: none;
+    z-index: 1000000;
+    top: 0;
+    left: 0;
+    display: none;
+    mix-blend-mode: difference;
+}
+
+body.cursor-active .cursor-trail-dot {
+    display: block;
 }
 
 .custom-cursor.hover {
-    width: 48px;
-    height: 48px;
+    width: 72px;
+    height: 72px;
     background-color: transparent;
     border-color: rgba(255, 255, 255, 0.6);
     border-width: 1.5px;
@@ -859,7 +877,8 @@ body.cursor-active .cursor-dot {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.1s ease-out; /* Snappy tilt transition */
+    transition: transform 0.1s ease-out;
+    /* Snappy tilt transition */
 }
 
 /* Smooth transition only when flipping */
@@ -971,7 +990,7 @@ body.cursor-active .cursor-dot {
 .card-back-dotgrid {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 18px 18px;
     z-index: 0;
     border-radius: 20px;
@@ -985,7 +1004,7 @@ body.cursor-active .cursor-dot {
     left: 10%;
     width: 80%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
     border-radius: 0 0 4px 4px;
     z-index: 3;
     pointer-events: none;
@@ -996,7 +1015,7 @@ body.cursor-active .cursor-dot {
     font-family: var(--font-heading);
     font-size: 3rem;
     font-weight: 900;
-    color: rgba(255,255,255,0.06);
+    color: rgba(255, 255, 255, 0.06);
     line-height: 1;
     letter-spacing: -2px;
     position: absolute;
@@ -1011,7 +1030,7 @@ body.cursor-active .cursor-dot {
 .card-back-divider {
     width: 36px;
     height: 2px;
-    background: linear-gradient(90deg, #fff, rgba(255,255,255,0.15));
+    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.15));
     border-radius: 2px;
     flex-shrink: 0;
 }
@@ -1029,7 +1048,7 @@ body.cursor-active .cursor-dot {
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255, 255, 255, 0.3);
 }
 
 /* Tech chip row */
@@ -1044,9 +1063,9 @@ body.cursor-active .cursor-dot {
     font-weight: 700;
     padding: 0.25rem 0.65rem;
     border-radius: 100px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.14);
-    color: rgba(255,255,255,0.75);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.75);
     letter-spacing: 0.5px;
     text-transform: uppercase;
     white-space: nowrap;
@@ -1054,7 +1073,7 @@ body.cursor-active .cursor-dot {
 }
 
 .project-card.flipped .card-back-chip:hover {
-    background: rgba(255,255,255,0.18);
+    background: rgba(255, 255, 255, 0.18);
     color: #fff;
 }
 
@@ -1067,7 +1086,7 @@ body.cursor-active .cursor-dot {
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255, 255, 255, 0.45);
     margin-top: 0.3rem;
 }
 
@@ -1076,7 +1095,7 @@ body.cursor-active .cursor-dot {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     animation: dock-pulse 2s infinite;
 }
 
@@ -2379,7 +2398,8 @@ body.overlay-open {
     }
 
     #hub-skills-view .hub-footer {
-        margin-top: -10rem !important; /* Raised to meet the converging red paths */
+        margin-top: -10rem !important;
+        /* Raised to meet the converging red paths */
     }
 
     .hub-back-btn {
@@ -3042,7 +3062,8 @@ body.overlay-open {
     }
 
     /* Stack steps vertically, full width */
-    .step, .skill-step {
+    .step,
+    .skill-step {
         width: 92% !important;
         max-width: 480px !important;
         margin: 0 auto 3.5rem !important;
@@ -3065,7 +3086,8 @@ body.overlay-open {
     }
 
     /* Step number layout on mobile */
-    .step-number, .skill-step-number {
+    .step-number,
+    .skill-step-number {
         position: relative !important;
         top: 0 !important;
         left: 0 !important;
@@ -3089,7 +3111,8 @@ body.overlay-open {
         font-size: 1rem;
     }
 
-    .qual-desc, .skill-desc {
+    .qual-desc,
+    .skill-desc {
         font-size: 0.9rem;
     }
 
@@ -3098,7 +3121,7 @@ body.overlay-open {
     }
 
     /* Skills Specific Mobile Cleanups */
-    .skill-step:nth-child(even), 
+    .skill-step:nth-child(even),
     .skill-step:nth-child(odd) {
         text-align: left !important;
         margin-left: auto !important;
@@ -3149,13 +3172,15 @@ body.overlay-open {
         height: 320px;
     }
 
-    .step, .skill-step {
+    .step,
+    .skill-step {
         width: 95% !important;
         padding: 1.5rem 1.2rem;
         margin-bottom: 3rem !important;
     }
 
-    .step h3, .skill-step-title {
+    .step h3,
+    .skill-step-title {
         font-size: 1.3rem;
     }
 
@@ -3741,8 +3766,8 @@ body.overlay-open {
     position: fixed;
     pointer-events: none;
     z-index: 999999;
-    top: -75px;
-    left: -75px;
+    top: 0;
+    left: 0;
     mix-blend-mode: screen;
     transition: width 1s ease, height 1s ease, opacity 0.5s ease;
 }
